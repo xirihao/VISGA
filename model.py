@@ -1,10 +1,3 @@
-"""-----------------------------------------------------
-创建时间 :  2020/6/11  22:27
-说明    :
-todo   :  
------------------------------------------------------"""
-# -*- coding: utf-8 -*-
-
 import torch.nn as nn
 import torch
 from pathlib import Path
@@ -81,23 +74,18 @@ class GatedConv2d(nn.Module):
     def __init__(self, in_channels, out_channels):
         super(GatedConv2d, self).__init__()
         
-        # 卷积层
         self.conv = nn.Conv2d(in_channels, out_channels, 3, 
                               1, 1, bias=False)
         
-        # 门控卷积中的门控网络，采用1x1卷积来生成门控
         self.gate = nn.Conv2d(in_channels, out_channels, 1, 
                               1, 0, bias=False)
-        
-        # 批归一化
+
         self.batch_norm = nn.BatchNorm2d(out_channels)
         self.MLP = GRAMLayer(128, 128, 4)
                 
 
     def forward(self, x):
         # 输入: [B, C, H, W]
-        
-        # 常规卷积操作
         conv_out = self.conv(x)  # [B, out_channels, H, W]
         
         # 门控操作
@@ -148,7 +136,7 @@ class patch_wise(nn.Module):
         return pred
 
     
-class netReg(nn.Module):  # 3085185个参数
+class netReg(nn.Module): 
     def __init__(self):
         super(netReg, self).__init__()
         self.model_name = Path(__file__).name[:-3]
